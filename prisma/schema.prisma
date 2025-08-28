@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid()) //cuid generates a unique id string
+  username String @unique
+  password String
+  links    Link[] //one user can have many links
+}
+
+model Link {
+  id    String @id @default(cuid())
+  title String
+  url   String
+
+  //foreign key - 
+  userId String
+
+  user User @relation(fields: [userId], references: [id])
+}
